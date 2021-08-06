@@ -14,6 +14,7 @@ public class JavaGame extends JFrame {
 	
 	int contadorX=0;
 	int contadorO=0;
+	boolean winner;
 	
 	Player1 player1 = new Player1();
 	Player1 player2 = new Player1();
@@ -142,6 +143,7 @@ public class JavaGame extends JFrame {
 				String nombre2 = TF2.getText();
 				boolean isCPU1 = false;
 				boolean isCPU2 = false;
+				winner = false;
 					
 					if(H2.isSelected()) {
 						isCPU2 = false;
@@ -199,6 +201,7 @@ public class JavaGame extends JFrame {
 				boolean en_blanco = false;
 				boolean X = false;
 				boolean O = false;
+				boolean winner = false;
 				
 				if(source.getText()=="") {//If para saber si el boton pulsado esta en blanco
 					en_blanco=true;
@@ -341,6 +344,36 @@ public class JavaGame extends JFrame {
 						contadorO--;
 					}
 				}
+				//Check si hay una combinacion ganadora en el tablero despues del ultimo movimiento
+				if (!winner) {
+					//check rows
+				    if ((BS1.getText().equals("X") || BS1.getText().equals("O")) &&BS1.getText().equals(BS2.getText()) && BS2.getText().equals(BS3.getText())) winner=true;
+				    if ((BS4.getText().equals("X") || BS1.getText().equals("O")) &&BS4.getText().equals(BS5.getText()) && BS5.getText().equals(BS6.getText())) winner=true;
+				    if ((BS7.getText().equals("X") || BS1.getText().equals("O")) &&BS7.getText().equals(BS8.getText()) && BS8.getText().equals(BS9.getText())) winner=true;
+				    //check columns
+				    if ((BS1.getText().equals("X") || BS1.getText().equals("O")) &&BS1.getText().equals(BS4.getText()) && BS4.getText().equals(BS7.getText())) winner=true;
+				    if ((BS2.getText().equals("X") || BS1.getText().equals("O")) &&BS2.getText().equals(BS5.getText()) && BS5.getText().equals(BS8.getText())) winner=true;
+				    if ((BS3.getText().equals("X") || BS1.getText().equals("O")) &&BS3.getText().equals(BS6.getText()) && BS6.getText().equals(BS9.getText())) winner=true;
+				    //check diagonal
+				    if ((BS1.getText().equals("X") || BS1.getText().equals("O")) &&BS1.getText().equals(BS5.getText()) && BS5.getText().equals(BS9.getText())) winner=true;
+				    if ((BS3.getText().equals("X") || BS1.getText().equals("O")) &&BS3.getText().equals(BS5.getText()) && BS5.getText().equals(BS7.getText())) winner=true;
+				}
+				if (source.getText().equals("X") && winner) {
+					System.out.println("EL jugador 1 gana");
+				} else if (source.getText().equals("O") && winner) {
+					System.out.println("El jugador 2 gana");
+				}
+				if (winner) {
+					BS1.setEnabled(false);
+					BS2.setEnabled(false);
+					BS3.setEnabled(false);
+					BS4.setEnabled(false);
+					BS5.setEnabled(false);
+					BS6.setEnabled(false);
+					BS7.setEnabled(false);
+					BS8.setEnabled(false);
+					BS9.setEnabled(false);
+				}
 				
 			}
 		};
@@ -393,5 +426,4 @@ public class JavaGame extends JFrame {
 		}
 		
 	}
-
 }
