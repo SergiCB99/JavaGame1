@@ -7,6 +7,13 @@ import java.util.Random;
 import javax.swing.*;
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormSpecs;
+import com.jgoodies.forms.layout.RowSpec;
 
 public class JavaGame extends JFrame {
 
@@ -42,103 +49,96 @@ public class JavaGame extends JFrame {
 	
 		setTitle("Java Game");
 		
-		setBounds(400,20,597,371);
+		setBounds(400,20,459,271);
 	
 		contentPane = new JPanel();
-		
+		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		setContentPane(contentPane);
-		
-		JButton nueva_partida = new JButton ("Nueva Partida");
-		nueva_partida.setBounds(371, 11, 139, 32);
-		contentPane.add(nueva_partida);
-		
-		JLabel estado = new JLabel ();
-		estado.setForeground(Color.RED);
-		estado.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		estado.setHorizontalAlignment(SwingConstants.CENTER);
-		estado.setBounds(296, 54, 214, 35);
-		contentPane.add(estado);
-		
-		JLabel J1 = new JLabel ("Jugador 1");
-		J1.setHorizontalAlignment(SwingConstants.CENTER);
-		J1.setBounds(296, 100, 129, 35);
-		contentPane.add(J1);
-		
-		JLabel J2 = new JLabel ("Jugador 2");
-		J2.setHorizontalAlignment(SwingConstants.CENTER);
-		J2.setBounds(296, 175, 129, 35);
-		contentPane.add(J2);
-		
+		//Panel derecho
 		JLabel N1 = new JLabel ("Nombre:");
-		N1.setHorizontalAlignment(SwingConstants.CENTER);
-		N1.setBounds(333, 129, 92, 35);
+		N1.setBounds(229, 98, 54, 14);
+		N1.setHorizontalAlignment(SwingConstants.LEFT);
 		contentPane.add(N1);
 		
-		JLabel N2 = new JLabel ("Nombre:");
-		N2.setHorizontalAlignment(SwingConstants.CENTER);
-		N2.setBounds(333, 221, 92, 35);
-		contentPane.add(N2);
+		JLabel J1 = new JLabel ("Jugador 1");
+		J1.setBounds(301, 73, 65, 14);
+		J1.setHorizontalAlignment(SwingConstants.LEFT);
+		contentPane.add(J1);
 		
 		JTextField TF1 = new JTextField();
-		TF1.setBounds(439, 132, 132, 29);
+		TF1.setBounds(293, 95, 137, 20);
 		contentPane.add(TF1);
 		
+		JLabel J2 = new JLabel ("Jugador 2");
+		J2.setBounds(301, 137, 67, 14);
+		J2.setHorizontalAlignment(SwingConstants.LEFT);
+		contentPane.add(J2);
+		
+		JLabel N2 = new JLabel ("Nombre:");
+		N2.setBounds(229, 165, 54, 14);
+		N2.setHorizontalAlignment(SwingConstants.LEFT);
+		contentPane.add(N2);
+		
 		JTextField TF2 = new JTextField();
-		TF2.setBounds(439, 224, 132, 29);
+		TF2.setBounds(293, 162, 137, 20);
 		contentPane.add(TF2);
 		
 		JLabel tipo2 = new JLabel ("Tipo:");
-		tipo2.setHorizontalAlignment(SwingConstants.CENTER);
-		tipo2.setBounds(333, 286, 73, 35);
+		tipo2.setBounds(229, 193, 35, 20);
+		tipo2.setHorizontalAlignment(SwingConstants.LEFT);
 		contentPane.add(tipo2);
 		
-		JRadioButton H2 = new JRadioButton("Humano",false);
-		H2.setBounds(427, 286, 73, 35);
-		contentPane.add(H2);
+		ButtonGroup BG2 = new ButtonGroup();
 		
 		JRadioButton C2 = new JRadioButton("CPU",true);
-		C2.setBounds(498, 285, 73, 40);
+		C2.setBounds(375, 196, 62, 14);
 		contentPane.add(C2);
-		
-		ButtonGroup BG2 = new ButtonGroup();
-		BG2.add(H2);
 		BG2.add(C2);
 		
-		BS1.setBounds(0, 11, 72, 71);
+		JRadioButton H2 = new JRadioButton("Humano",false);
+		H2.setBounds(293, 196, 73, 14);
+		contentPane.add(H2);
+		BG2.add(H2);
+		
+		JButton nueva_partida = new JButton ("Nueva Partida");
+		nueva_partida.setBounds(229, 11, 123, 27);
+		contentPane.add(nueva_partida);
+		
+		JLabel estado = new JLabel ();
+		estado.setBounds(229, 43, 191, 30);
+		estado.setForeground(Color.RED);
+		estado.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		estado.setHorizontalAlignment(SwingConstants.CENTER);
+		contentPane.add(estado);
+		
+		//TABLERO
+		
+		BS1.setBounds(10, 11, 67, 62);
 		BS1.setEnabled(false);
 		contentPane.add(BS1);
-		
-		BS2.setBounds(80, 11, 72, 71);
+		BS2.setBounds(81, 11, 67, 62);
 		BS2.setEnabled(false);
 		contentPane.add(BS2);
-		
-		BS3.setBounds(162, 11, 72, 71);
+		BS3.setBounds(152, 11, 67, 62);
 		BS3.setEnabled(false);
 		contentPane.add(BS3);
-		
-		BS4.setBounds(0, 93, 72, 71);
+		BS4.setBounds(10, 78, 67, 66);
 		BS4.setEnabled(false);
 		contentPane.add(BS4);
-		
-		BS5.setBounds(80, 93, 72, 71);
+		BS5.setBounds(81, 78, 67, 66);
 		BS5.setEnabled(false);
 		contentPane.add(BS5);
-	
-		BS6.setBounds(162, 93, 72, 71);
+		BS6.setBounds(152, 78, 67, 66);
 		BS6.setEnabled(false);
 		contentPane.add(BS6);
-	
-		BS7.setBounds(0, 175, 72, 71);
+		BS7.setBounds(10, 149, 67, 65);
 		BS7.setEnabled(false);
 		contentPane.add(BS7);
-		
-		BS8.setBounds(80, 175, 72, 71);
+		BS8.setBounds(81, 149, 67, 65);
 		BS8.setEnabled(false);
 		contentPane.add(BS8);
-		
-		BS9.setBounds(162, 175, 72, 71);
+		BS9.setBounds(152, 149, 67, 65);
 		BS9.setEnabled(false);
 		contentPane.add(BS9);
 		
@@ -403,7 +403,7 @@ public class JavaGame extends JFrame {
 		
 	}
 
-	/*public void clicarCPU() {
+	public void clicarCPU() {
 		if(!jugando1 && player2.isCPU) {
 			int r = rand.nextInt((9 - 1) + 1) + 1;
 				
@@ -440,5 +440,5 @@ public class JavaGame extends JFrame {
 				}
 	
 		}
-	}*/
+	}
 }
