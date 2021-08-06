@@ -166,7 +166,7 @@ public class JavaGame extends JFrame {
 					
 					//System.out.println(player2.toString());
 					
-					//estado.setText(player1.nombre+" coloca ficha");
+					estado.setText("");
 					
 					BS1.setEnabled(true);
 					BS2.setEnabled(true);
@@ -191,6 +191,11 @@ public class JavaGame extends JFrame {
 					jugando1 = true;
 					contadorX=0;
 					contadorO=0;
+					
+					/*while(!winner&& !jugando1 && player2.isCPU) {
+						clicarCPU();
+					}*/
+					
 				}
 				
 			}
@@ -221,6 +226,7 @@ public class JavaGame extends JFrame {
 						BS1.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS1 == source && !jugando1 && en_blanco) {
 							BS1.setText("O");
 							jugando1=true;
@@ -229,6 +235,7 @@ public class JavaGame extends JFrame {
 						BS2.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS2 == source && !jugando1 && en_blanco) {
 							BS2.setText("O");
 							jugando1=true;
@@ -237,6 +244,7 @@ public class JavaGame extends JFrame {
 						BS3.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS3 == source && !jugando1 && en_blanco) {
 							BS3.setText("O");
 							jugando1=true;
@@ -245,6 +253,7 @@ public class JavaGame extends JFrame {
 						BS4.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS4 == source && !jugando1 && en_blanco) {
 							BS4.setText("O");
 							jugando1=true;
@@ -253,6 +262,7 @@ public class JavaGame extends JFrame {
 						BS5.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS5 == source && !jugando1 && en_blanco) {
 							BS5.setText("O");
 							jugando1=true;
@@ -261,6 +271,7 @@ public class JavaGame extends JFrame {
 						BS6.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS6 == source && !jugando1 && en_blanco) {
 							BS6.setText("O");
 							jugando1=true;
@@ -269,6 +280,7 @@ public class JavaGame extends JFrame {
 						BS7.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS7 == source && !jugando1 && en_blanco) {
 							BS7.setText("O");
 							jugando1=true;
@@ -277,6 +289,7 @@ public class JavaGame extends JFrame {
 						BS8.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS8 == source && !jugando1 && en_blanco) {
 							BS8.setText("O");
 							jugando1=true;
@@ -285,6 +298,7 @@ public class JavaGame extends JFrame {
 						BS9.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS9 == source && !jugando1 && en_blanco) {
 							BS9.setText("O");
 							jugando1=true;
@@ -297,54 +311,63 @@ public class JavaGame extends JFrame {
 					}else if(BS1 == source && !jugando1 && O) {
 						BS1.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS2 == source && jugando1 && X) {//Boton 2
 						BS2.setText("");
 						contadorX--;
 					}else if(BS2 == source && !jugando1 && O) {
 						BS2.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS3 == source && jugando1 && X) {//Boton 3
 						BS3.setText("");
 						contadorX--;
 					}else if(BS3 == source && !jugando1 && O) {
 						BS3.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS4 == source && jugando1 && X) {//Boton 4
 						BS4.setText("");
 						contadorX--;
 					}else if(BS4 == source && !jugando1 && O) {
 						BS4.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS5 == source && jugando1 && X) {//Boton 6
 						BS5.setText("");
 						contadorX--;
 					}else if(BS5 == source && !jugando1 && O) {
 						BS5.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS6 == source && jugando1 && X) {//Boton 6
 						BS6.setText("");
 						contadorX--;
 					}else if(BS6 == source && !jugando1 && O) {
 						BS6.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS7 == source && jugando1 && X) {//Boton 7
 						BS7.setText("");
 						contadorX--;
 					}else if(BS7 == source && !jugando1 && O) {
 						BS7.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS8 == source && jugando1 && X) {//Boton 8
 						BS8.setText("");
 						contadorX--;
 					}else if(BS8 == source && !jugando1 && O) {
 						BS8.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS9 == source && jugando1 && X) {//Boton 9
 						BS9.setText("");
 						contadorX--;
 					}else if(BS9 == source && !jugando1 && O) {
 						BS9.setText("");
 						contadorO--;
+						clicarCPU();
 					}
 				}
 				
@@ -392,48 +415,82 @@ public class JavaGame extends JFrame {
 		BS8.addActionListener(pulsarBoton);
 		BS9.addActionListener(pulsarBoton);
 		
-		while(!winner) {
-			clicarCPU();
-		}
+
 		
 	}
 
 	public void clicarCPU() {
-//		if(!jugando1 && player2.isCPU) {
+		if(player2.isCPU) {
 			int r = rand.nextInt((9 - 1) + 1) + 1;
 				
-			System.out.println("Tirada CPU");
+			System.out.println("Tirada CPU "+r);
 			
 				switch(r) {
 					case 1:
-						BS1.doClick();
+						if(BS1.getText()==""||contadorO==3 && BS1.getText()=="O") {
+							BS1.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 2:
-						BS2.doClick();
+						if(BS2.getText()==""||contadorO==3 && BS2.getText()=="O") {
+							BS2.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 3:
-						BS3.doClick();
+						if(BS3.getText()==""||contadorO==3 && BS3.getText()=="O") {
+							BS3.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 4:
-						BS4.doClick();
+						if(BS4.getText()==""||contadorO==3 && BS4.getText()=="O") {
+							BS4.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 5:
-						BS5.doClick();
+						if(BS5.getText()==""||contadorO==3 && BS5.getText()=="O") {
+							BS5.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 6:
-						BS6.doClick();
+						if(BS6.getText()==""||contadorO==3 && BS6.getText()=="O") {
+							BS6.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 7:
-						BS7.doClick();
+						if(BS7.getText()==""||contadorO==3 && BS7.getText()=="O") {
+							BS7.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 8:
-						BS8.doClick();
+						if(BS8.getText()==""||contadorO==3 && BS8.getText()=="O") {
+							BS8.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 9:
-						BS9.doClick();
+						if(BS9.getText()==""||contadorO==3 && BS9.getText()=="O") {
+							BS9.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 				}
 	
-		//}
+		}
 	}
 }
