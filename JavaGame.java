@@ -427,63 +427,63 @@ public class JavaGame extends JFrame {
 			
 				switch(r) {
 					case 1:
-						if(BS1.getText()==""||contadorO==3 && BS1.getText()=="O") {
+						if(contadorO<3 && BS1.getText()==""||contadorO==3 && BS1.getText()=="O") {
 							BS1.doClick();
 						}else {
 							clicarCPU();
 						}
 					break;
 					case 2:
-						if(BS2.getText()==""||contadorO==3 && BS2.getText()=="O") {
+						if(contadorO<3 && BS2.getText()==""||contadorO==3 && BS2.getText()=="O") {
 							BS2.doClick();
 						}else {
 							clicarCPU();
 						}
 					break;
 					case 3:
-						if(BS3.getText()==""||contadorO==3 && BS3.getText()=="O") {
+						if(contadorO<3 && BS3.getText()==""||contadorO==3 && BS3.getText()=="O") {
 							BS3.doClick();
 						}else {
 							clicarCPU();
 						}
 					break;
 					case 4:
-						if(BS4.getText()==""||contadorO==3 && BS4.getText()=="O") {
+						if(contadorO<3 && BS4.getText()==""||contadorO==3 && BS4.getText()=="O") {
 							BS4.doClick();
 						}else {
 							clicarCPU();
 						}
 					break;
 					case 5:
-						if(BS5.getText()==""||contadorO==3 && BS5.getText()=="O") {
+						if(contadorO<3 && BS5.getText()==""||contadorO==3 && BS5.getText()=="O") {
 							BS5.doClick();
 						}else {
 							clicarCPU();
 						}
 					break;
 					case 6:
-						if(BS6.getText()==""||contadorO==3 && BS6.getText()=="O") {
+						if(contadorO<3 && BS6.getText()==""||contadorO==3 && BS6.getText()=="O") {
 							BS6.doClick();
 						}else {
 							clicarCPU();
 						}
 					break;
 					case 7:
-						if(BS7.getText()==""||contadorO==3 && BS7.getText()=="O") {
+						if(contadorO<3 && BS7.getText()==""||contadorO==3 && BS7.getText()=="O") {
 							BS7.doClick();
 						}else {
 							clicarCPU();
 						}
 					break;
 					case 8:
-						if(BS8.getText()==""||contadorO==3 && BS8.getText()=="O") {
+						if(contadorO<3 && BS8.getText()==""||contadorO==3 && BS8.getText()=="O") {
 							BS8.doClick();
 						}else {
 							clicarCPU();
 						}
 					break;
 					case 9:
-						if(BS9.getText()==""||contadorO==3 && BS9.getText()=="O") {
+						if(contadorO<3 && BS9.getText()==""||contadorO==3 && BS9.getText()=="O") {
 							BS9.doClick();
 						}else {
 							clicarCPU();
