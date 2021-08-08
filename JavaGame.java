@@ -40,6 +40,10 @@ public class JavaGame extends JFrame {
 	static JButton BS7 = new JButton ();
 	static JButton BS8 = new JButton ();
 	static JButton BS9 = new JButton ();
+
+	//array con la distribución de las piezas
+	char[] board = new char[9];
+	for (c : board) c = "";
 	
 	public JavaGame() {
 
@@ -109,7 +113,7 @@ public class JavaGame extends JFrame {
 		estado.setBounds(229, 43, 191, 30);
 		estado.setForeground(Color.RED);
 		estado.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		estado.setHorizontalAlignment(SwingConstants.CENTER);
+		estado.setHorizontalAlignment(SwingConstants.LEFT);
 		contentPane.add(estado);
 		
 		//TABLERO
@@ -141,13 +145,15 @@ public class JavaGame extends JFrame {
 		BS9.setBounds(152, 149, 67, 65);
 		BS9.setEnabled(false);
 		contentPane.add(BS9);
+
+		//Acciones
 		
 		ActionListener partida_nueva = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				String nombre1 = TF1.getText();
 				String nombre2 = TF2.getText();
-				boolean isCPU1 = false;
+				// boolean isCPU1 = false; //P1 nunca será cpu
 				boolean isCPU2 = false;
 				winner = false;
 				estado.setText("");
@@ -166,7 +172,7 @@ public class JavaGame extends JFrame {
 					JOptionPane.showMessageDialog(null,"Selecciona que es el jugador 2");
 				}else {	
 				
-					player1 = new Player1(nombre1,isCPU1);
+					player1 = new Player1(nombre1,false);
 					player2 = new Player1(nombre2,isCPU2);
 					
 					//System.out.println(player2.toString());
@@ -206,7 +212,7 @@ public class JavaGame extends JFrame {
 				
 				JButton source = (JButton)e.getSource();//Coge el nombre del boton que se ha pulsado
 				
-				//Booleanos para controlar condiciones
+				//Booleanos para controlar el valor de la casilla seleccionada {X - O - vacia} cada vez que se presiona el boton
 				boolean en_blanco = false;
 				boolean X = false;
 				boolean O = false;
@@ -385,7 +391,7 @@ public class JavaGame extends JFrame {
 				
 			}
 		};
-		
+		//Añade las acciones a los botones
 		nueva_partida.addActionListener(partida_nueva);
 		BS1.addActionListener(pulsarBoton);
 		BS2.addActionListener(pulsarBoton);
@@ -397,14 +403,10 @@ public class JavaGame extends JFrame {
 		BS8.addActionListener(pulsarBoton);
 		BS9.addActionListener(pulsarBoton);
 		
-		while(!winner) {
-			//clicarCPU();
-		}
-		
 	}
 
 	public void clicarCPU() {
-		if(!jugando1 && player2.isCPU) {
+		if(player2.isCPU) {
 			int r = rand.nextInt((9 - 1) + 1) + 1;
 				
 			System.out.println("Tirada CPU");
