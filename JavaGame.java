@@ -12,18 +12,24 @@ public class JavaGame extends JFrame {
 
 	private JPanel contentPane;
 	
+	//Creamos este booleano para controlar que jugador esta jugando
 	boolean jugando1 = true;
 	
+	//Creamos y inicializamos las variables para contar cuantas fichas hay
 	int contadorX=0;
 	int contadorO=0;
 	
+	//Creamos los jugadores en blanco para usarlos mas tarde
 	Player1 player1 = new Player1();
 	Player1 player2 = new Player1();
 	
+	//Creamos y inicializamos el booleano que controlara el fin de la partida
 	boolean winner = false;
 	
+	//Declaramos la classe Random para usarlo en la CPU
 	Random rand = new Random();
 	
+	//Declaramos los botones
 	static JButton BS1 = new JButton ();
 	static JButton BS2 = new JButton ();
 	static JButton BS3 = new JButton ();
@@ -139,18 +145,23 @@ public class JavaGame extends JFrame {
 		ActionListener partida_nueva = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				//Variables para guardar el nombre y si es humano o CPU 
 				String nombre1 = TF1.getText();
 				String nombre2 = TF2.getText();
 				boolean isCPU1 = false;
 				boolean isCPU2 = false;
+				
+				//Canviamos el valor de winner a false
 				winner = false;	
 				
+				//Guardamos el tipo del jugador 2
 				if(H2.isSelected()) {
 					isCPU2 = false;
 				}else {
 					isCPU2 = true;
 				}
 		
+				//If's para validar que todos los datos de los jugadores estan rellenados
 				if(nombre1.length()==0) {
 					JOptionPane.showMessageDialog(null,"Introduce el nombre del jugador 1");
 				}else if(nombre2.length()==0) {
@@ -159,11 +170,14 @@ public class JavaGame extends JFrame {
 					JOptionPane.showMessageDialog(null,"Selecciona que es el jugador 2");
 				}else {	
 				
+				//Llenamos los dos jugadores
 				player1 = new Player1(nombre1,isCPU1);
 				player2 = new Player1(nombre2,isCPU2);
 					
+				//Vaciamos la label que nos indicara el ganador
 				estado.setText("");
 					
+				//Activamos los botones
 				BS1.setEnabled(true);
 				BS2.setEnabled(true);
 				BS3.setEnabled(true);
@@ -174,6 +188,7 @@ public class JavaGame extends JFrame {
 				BS8.setEnabled(true);
 				BS9.setEnabled(true);
 					
+				//Los ponemos en blanco
 				BS1.setText("");
 				BS2.setText("");
 				BS3.setText("");
@@ -184,9 +199,11 @@ public class JavaGame extends JFrame {
 				BS8.setText("");
 				BS9.setText("");
 					
+				//Canviamos el valor de las variables para hacer comprovaciones en otras funciones
 				jugando1 = true;
 				contadorX=0;
 				contadorO=0;
+				
 				}	
 			}
 		};
@@ -211,16 +228,16 @@ public class JavaGame extends JFrame {
 					O=true;
 				}
 				
-				if(contadorX<3 || contadorO<3) {//Si se cumple la condicion entrara en este primer if que pone valor a un boton vacio dependiendo del jugador que este jugando
-					if(BS1 == source && jugando1 && en_blanco) {//Boton 1
-						BS1.setText("X");
-						jugando1=false;
-						contadorX++;
-						clicarCPU();
-					}else if(BS1 == source && !jugando1 && en_blanco) {
-							BS1.setText("O");
-							jugando1=true;
-							contadorO++;
+				if(contadorX<3 || contadorO<3) {//Si el jugador tiene menos de tres fichas modifica el valor de un boton en blanco
+					if(BS1 == source && jugando1 && en_blanco) {//Boton 1 turno jugador 1
+						BS1.setText("X");//Canvia el texto del boton a X
+						jugando1=false;//Canvia el valor del booleano a false para "canviar de turno"
+						contadorX++;//Sumamos uno al contador de X
+						clicarCPU();//Funcion que simula la CPU
+					}else if(BS1 == source && !jugando1 && en_blanco) {//Boton 1 turno jugador 2
+							BS1.setText("O");//Canvia el texto del boton a O
+							jugando1=true;//Canvia el valor del booleano a true para "canviar de turno"
+							contadorO++;//Sumamos uno al contador de X
 					}else if(BS2 == source && jugando1 && en_blanco) {//Boton 2
 						BS2.setText("X");
 						jugando1=false;
@@ -294,14 +311,14 @@ public class JavaGame extends JFrame {
 							jugando1=true;
 							contadorO++;
 					}
-				}else {//Si ya hay tres X o tres O entraria en este else y pondria un boton en blanco
-					if(BS1 == source && jugando1 && X) {//Boton 1
-						BS1.setText("");
-						contadorX--;
-					}else if(BS1 == source && !jugando1 && O) {
-						BS1.setText("");
-						contadorO--;
-						clicarCPU();
+				}else {//Si ya hay tres X o tres O entraria en este else
+					if(BS1 == source && jugando1 && X) {//Boton 1 turno jugador 1
+						BS1.setText("");//Canvia el texto de boton a vacio
+						contadorX--;//Restamos uno a el contador de X
+					}else if(BS1 == source && !jugando1 && O) {//Boton 1 turno jugador 2
+						BS1.setText("");////Canvia el texto de boton a vacio
+						contadorO--;//Restamos uno a el contador de X
+						clicarCPU();//Se llama a la funcion clicarCPU para poner la O
 					}else if(BS2 == source && jugando1 && X) {//Boton 2
 						BS2.setText("");
 						contadorX--;
@@ -375,11 +392,13 @@ public class JavaGame extends JFrame {
 					if ((BS1.getText().equals("X") || BS1.getText().equals("O")) &&BS1.getText().equals(BS5.getText()) && BS5.getText().equals(BS9.getText())) winner=true;
 					if ((BS3.getText().equals("X") || BS3.getText().equals("O")) &&BS3.getText().equals(BS5.getText()) && BS5.getText().equals(BS7.getText())) winner=true;
 				}
+				//Dependiendo de el valor del ultimo boton clicado el label mostrara un texto u otro
 				if (source.getText().equals("X") && winner) {
 					estado.setText(player1.nombre+" gana");
 				} else if (source.getText().equals("O") && winner) {
 					estado.setText(player2.nombre+" gana");
 				}
+				//Si gana se desabilitan los botones
 				if (winner) {
 					BS1.setEnabled(false);
 					BS2.setEnabled(false);
@@ -395,6 +414,7 @@ public class JavaGame extends JFrame {
 			}
 		};
 		
+		//Asignamos el ActionListener a los botones
 		nueva_partida.addActionListener(partida_nueva);
 		BS1.addActionListener(pulsarBoton);
 		BS2.addActionListener(pulsarBoton);
@@ -411,16 +431,22 @@ public class JavaGame extends JFrame {
 	}
 
 	public void clicarCPU() {
+		//Si el jugador 2 es CPU entrara al if
 		if(player2.isCPU) {
+			//Generamos un numero aleatorio entre 1 y 9
 			int r = rand.nextInt((9 - 1) + 1) + 1;
-				
-			System.out.println("Tirada CPU "+r);
 			
+				//Dependiendio del numero generado pulsara un boton u otro
 				switch(r) {
 					case 1:
+						/*
+						  	Controlamos donde pondra la ficha de la siguiente manera
+							Si tiene menos de 3 fichas colocadas la tiene que poner en algun boton que este en blanco
+							Y si tiene tres tiene que clicar en una O para quitar-la y volver a poner-la
+						*/
 						if(contadorO<3 && BS1.getText()==""||contadorO==3 && BS1.getText()=="O") {
 							BS1.doClick();
-						}else {
+						}else {	//Sino se cumple ninguna de estas vuelve a llamar a la funcion para generar otro numero
 							clicarCPU();
 						}
 					break;
