@@ -1,19 +1,12 @@
 package C4.JavaGame;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.*;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.layout.RowSpec;
 
 public class JavaGame extends JFrame {
 
@@ -27,7 +20,10 @@ public class JavaGame extends JFrame {
 	Player1 player1 = new Player1();
 	Player1 player2 = new Player1();
 	
+	boolean isCPU2;
 	boolean winner = false;
+	boolean p1Wins;
+	boolean p2Wins;//variable necesaria para determinar si la cpu gana la partida
 	
 	Random rand = new Random();
 	
@@ -40,10 +36,6 @@ public class JavaGame extends JFrame {
 	static JButton BS7 = new JButton ();
 	static JButton BS8 = new JButton ();
 	static JButton BS9 = new JButton ();
-
-	//array con la distribución de las piezas
-	char[] board = new char[9];
-	for (c : board) c = "";
 	
 	public JavaGame() {
 
@@ -60,39 +52,55 @@ public class JavaGame extends JFrame {
 		contentPane.setLayout(null);
 		
 		//Panel derecho
+		//Labels
 		JLabel N1 = new JLabel ("Nombre:");
 		N1.setBounds(229, 98, 54, 14);
 		N1.setHorizontalAlignment(SwingConstants.LEFT);
 		contentPane.add(N1);
-		
-		JLabel J1 = new JLabel ("Jugador 1");
-		J1.setBounds(301, 73, 65, 14);
-		J1.setHorizontalAlignment(SwingConstants.LEFT);
-		contentPane.add(J1);
-		
-		JTextField TF1 = new JTextField();
-		TF1.setBounds(293, 95, 137, 20);
-		contentPane.add(TF1);
-		
-		JLabel J2 = new JLabel ("Jugador 2");
-		J2.setBounds(301, 137, 67, 14);
-		J2.setHorizontalAlignment(SwingConstants.LEFT);
-		contentPane.add(J2);
 		
 		JLabel N2 = new JLabel ("Nombre:");
 		N2.setBounds(229, 165, 54, 14);
 		N2.setHorizontalAlignment(SwingConstants.LEFT);
 		contentPane.add(N2);
 		
-		JTextField TF2 = new JTextField();
-		TF2.setBounds(293, 162, 137, 20);
-		contentPane.add(TF2);
+		JLabel J1 = new JLabel ("Jugador 1");
+		J1.setBounds(301, 73, 65, 14);
+		J1.setHorizontalAlignment(SwingConstants.LEFT);
+		contentPane.add(J1);
+
+		JLabel J2 = new JLabel ("Jugador 2");
+		J2.setBounds(301, 137, 67, 14);
+		J2.setHorizontalAlignment(SwingConstants.LEFT);
+		contentPane.add(J2);
 		
 		JLabel tipo2 = new JLabel ("Tipo:");
 		tipo2.setBounds(229, 193, 35, 20);
 		tipo2.setHorizontalAlignment(SwingConstants.LEFT);
 		contentPane.add(tipo2);
 		
+		JLabel estado = new JLabel ();
+		estado.setBounds(229, 43, 191, 30);
+		estado.setForeground(Color.RED);
+		estado.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		estado.setHorizontalAlignment(SwingConstants.LEFT);
+		contentPane.add(estado);
+		
+		//Campos de texto
+		JTextField TF1 = new JTextField();
+		TF1.setBounds(293, 95, 137, 20);
+		contentPane.add(TF1);
+		
+		JTextField TF2 = new JTextField();
+		TF2.setBounds(293, 162, 137, 20);
+		contentPane.add(TF2);
+		
+		//botones
+		//nueva partida
+		JButton nueva_partida = new JButton ("Nueva Partida");
+		nueva_partida.setBounds(229, 11, 123, 27);
+		contentPane.add(nueva_partida);
+		
+		//elegir cpu/human P2
 		ButtonGroup BG2 = new ButtonGroup();
 		
 		JRadioButton C2 = new JRadioButton("CPU",true);
@@ -105,19 +113,7 @@ public class JavaGame extends JFrame {
 		contentPane.add(H2);
 		BG2.add(H2);
 		
-		JButton nueva_partida = new JButton ("Nueva Partida");
-		nueva_partida.setBounds(229, 11, 123, 27);
-		contentPane.add(nueva_partida);
-		
-		JLabel estado = new JLabel ();
-		estado.setBounds(229, 43, 191, 30);
-		estado.setForeground(Color.RED);
-		estado.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		estado.setHorizontalAlignment(SwingConstants.LEFT);
-		contentPane.add(estado);
-		
 		//TABLERO
-		
 		BS1.setBounds(10, 11, 67, 62);
 		BS1.setEnabled(false);
 		contentPane.add(BS1);
@@ -147,22 +143,21 @@ public class JavaGame extends JFrame {
 		contentPane.add(BS9);
 
 		//Acciones
-		
 		ActionListener partida_nueva = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				String nombre1 = TF1.getText();
 				String nombre2 = TF2.getText();
-				// boolean isCPU1 = false; //P1 nunca será cpu
-				boolean isCPU2 = false;
+				isCPU2 = false;
 				winner = false;
-				estado.setText("");
+				p1Wins = false;
+				p2Wins = false;
 				
-					if(H2.isSelected()) {
-						isCPU2 = false;
-					}else if(C2.isSelected()){
-						isCPU2 = true;
-					}
+				if(H2.isSelected()) {
+					isCPU2 = false;
+				}else {
+					isCPU2 = true;
+				}
 		
 				if(nombre1.length()==0) {
 					JOptionPane.showMessageDialog(null,"Introduce el nombre del jugador 1");
@@ -172,38 +167,35 @@ public class JavaGame extends JFrame {
 					JOptionPane.showMessageDialog(null,"Selecciona que es el jugador 2");
 				}else {	
 				
-					player1 = new Player1(nombre1,false);
-					player2 = new Player1(nombre2,isCPU2);
+				player1 = new Player1(nombre1,false); //p1 nunca es CPU
+				player2 = new Player1(nombre2,isCPU2);
 					
-					//System.out.println(player2.toString());
+				estado.setText("");
 					
-					//estado.setText(player1.nombre+" coloca ficha");
+				BS1.setEnabled(true);
+				BS2.setEnabled(true);
+				BS3.setEnabled(true);
+				BS4.setEnabled(true);
+				BS5.setEnabled(true);
+				BS6.setEnabled(true);
+				BS7.setEnabled(true);
+				BS8.setEnabled(true);
+				BS9.setEnabled(true);
 					
-					BS1.setEnabled(true);
-					BS2.setEnabled(true);
-					BS3.setEnabled(true);
-					BS4.setEnabled(true);
-					BS5.setEnabled(true);
-					BS6.setEnabled(true);
-					BS7.setEnabled(true);
-					BS8.setEnabled(true);
-					BS9.setEnabled(true);
+				BS1.setText("");
+				BS2.setText("");
+				BS3.setText("");
+				BS4.setText("");
+				BS5.setText("");
+				BS6.setText("");
+				BS7.setText("");
+				BS8.setText("");
+				BS9.setText("");
 					
-					BS1.setText("");
-					BS2.setText("");
-					BS3.setText("");
-					BS4.setText("");
-					BS5.setText("");
-					BS6.setText("");
-					BS7.setText("");
-					BS8.setText("");
-					BS9.setText("");
-					
-					jugando1 = true;
-					contadorX=0;
-					contadorO=0;
-				}
-				
+				jugando1 = true;
+				contadorX=0;
+				contadorO=0;
+				}	
 			}
 		};
 		
@@ -212,7 +204,7 @@ public class JavaGame extends JFrame {
 				
 				JButton source = (JButton)e.getSource();//Coge el nombre del boton que se ha pulsado
 				
-				//Booleanos para controlar el valor de la casilla seleccionada {X - O - vacia} cada vez que se presiona el boton
+				//Booleanos para controlar condiciones
 				boolean en_blanco = false;
 				boolean X = false;
 				boolean O = false;
@@ -232,6 +224,7 @@ public class JavaGame extends JFrame {
 						BS1.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS1 == source && !jugando1 && en_blanco) {
 							BS1.setText("O");
 							jugando1=true;
@@ -240,6 +233,7 @@ public class JavaGame extends JFrame {
 						BS2.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS2 == source && !jugando1 && en_blanco) {
 							BS2.setText("O");
 							jugando1=true;
@@ -248,6 +242,7 @@ public class JavaGame extends JFrame {
 						BS3.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS3 == source && !jugando1 && en_blanco) {
 							BS3.setText("O");
 							jugando1=true;
@@ -256,6 +251,7 @@ public class JavaGame extends JFrame {
 						BS4.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS4 == source && !jugando1 && en_blanco) {
 							BS4.setText("O");
 							jugando1=true;
@@ -264,6 +260,7 @@ public class JavaGame extends JFrame {
 						BS5.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS5 == source && !jugando1 && en_blanco) {
 							BS5.setText("O");
 							jugando1=true;
@@ -272,6 +269,7 @@ public class JavaGame extends JFrame {
 						BS6.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS6 == source && !jugando1 && en_blanco) {
 							BS6.setText("O");
 							jugando1=true;
@@ -280,6 +278,7 @@ public class JavaGame extends JFrame {
 						BS7.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS7 == source && !jugando1 && en_blanco) {
 							BS7.setText("O");
 							jugando1=true;
@@ -288,6 +287,7 @@ public class JavaGame extends JFrame {
 						BS8.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS8 == source && !jugando1 && en_blanco) {
 							BS8.setText("O");
 							jugando1=true;
@@ -296,6 +296,7 @@ public class JavaGame extends JFrame {
 						BS9.setText("X");
 						jugando1=false;
 						contadorX++;
+						clicarCPU();
 					}else if(BS9 == source && !jugando1 && en_blanco) {
 							BS9.setText("O");
 							jugando1=true;
@@ -308,76 +309,105 @@ public class JavaGame extends JFrame {
 					}else if(BS1 == source && !jugando1 && O) {
 						BS1.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS2 == source && jugando1 && X) {//Boton 2
 						BS2.setText("");
 						contadorX--;
 					}else if(BS2 == source && !jugando1 && O) {
 						BS2.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS3 == source && jugando1 && X) {//Boton 3
 						BS3.setText("");
 						contadorX--;
 					}else if(BS3 == source && !jugando1 && O) {
 						BS3.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS4 == source && jugando1 && X) {//Boton 4
 						BS4.setText("");
 						contadorX--;
 					}else if(BS4 == source && !jugando1 && O) {
 						BS4.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS5 == source && jugando1 && X) {//Boton 6
 						BS5.setText("");
 						contadorX--;
 					}else if(BS5 == source && !jugando1 && O) {
 						BS5.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS6 == source && jugando1 && X) {//Boton 6
 						BS6.setText("");
 						contadorX--;
 					}else if(BS6 == source && !jugando1 && O) {
 						BS6.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS7 == source && jugando1 && X) {//Boton 7
 						BS7.setText("");
 						contadorX--;
 					}else if(BS7 == source && !jugando1 && O) {
 						BS7.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS8 == source && jugando1 && X) {//Boton 8
 						BS8.setText("");
 						contadorX--;
 					}else if(BS8 == source && !jugando1 && O) {
 						BS8.setText("");
 						contadorO--;
+						clicarCPU();
 					}else if(BS9 == source && jugando1 && X) {//Boton 9
 						BS9.setText("");
 						contadorX--;
 					}else if(BS9 == source && !jugando1 && O) {
 						BS9.setText("");
 						contadorO--;
+						clicarCPU();
 					}
 				}
 				
 				//Check si hay una combinacion ganadora en el tablero despues del ultimo movimiento
 				if (!winner) {
-					 if ((BS1.getText().equals("X") || BS1.getText().equals("O")) &&BS1.getText().equals(BS2.getText()) && BS2.getText().equals(BS3.getText())) winner=true;
-					    if ((BS4.getText().equals("X") || BS4.getText().equals("O")) &&BS4.getText().equals(BS5.getText()) && BS5.getText().equals(BS6.getText())) winner=true;
-					    if ((BS7.getText().equals("X") || BS7.getText().equals("O")) &&BS7.getText().equals(BS8.getText()) && BS8.getText().equals(BS9.getText())) winner=true;
-					    //check columns
-					    if ((BS1.getText().equals("X") || BS1.getText().equals("O")) &&BS1.getText().equals(BS4.getText()) && BS4.getText().equals(BS7.getText())) winner=true;
-					    if ((BS2.getText().equals("X") || BS2.getText().equals("O")) &&BS2.getText().equals(BS5.getText()) && BS5.getText().equals(BS8.getText())) winner=true;
-					    if ((BS3.getText().equals("X") || BS3.getText().equals("O")) &&BS3.getText().equals(BS6.getText()) && BS6.getText().equals(BS9.getText())) winner=true;
-					    //check diagonal
-					    if ((BS1.getText().equals("X") || BS1.getText().equals("O")) &&BS1.getText().equals(BS5.getText()) && BS5.getText().equals(BS9.getText())) winner=true;
-					    if ((BS3.getText().equals("X") || BS3.getText().equals("O")) &&BS3.getText().equals(BS5.getText()) && BS5.getText().equals(BS7.getText())) winner=true;
+					//Si no hay un ganador comprueba primero si P1 ha ganado (ya que mueve primero)
+					//check rows
+					if ((BS1.getText().equals("X") && BS1.getText().equals(BS2.getText()) && BS2.getText().equals(BS3.getText()))) winner=true;
+					if ((BS4.getText().equals("X") && BS4.getText().equals(BS5.getText()) && BS5.getText().equals(BS6.getText()))) winner=true;
+					if ((BS7.getText().equals("X") && BS7.getText().equals(BS8.getText()) && BS8.getText().equals(BS9.getText()))) winner=true;
+					//check columns
+					if ((BS1.getText().equals("X") && BS1.getText().equals(BS4.getText()) && BS4.getText().equals(BS7.getText()))) winner=true;
+					if ((BS2.getText().equals("X") && BS2.getText().equals(BS5.getText()) && BS5.getText().equals(BS8.getText()))) winner=true;
+					if ((BS3.getText().equals("X") && BS3.getText().equals(BS6.getText()) && BS6.getText().equals(BS9.getText()))) winner=true;
+					//check diagonal
+					if ((BS1.getText().equals("X") && BS1.getText().equals(BS5.getText()) && BS5.getText().equals(BS9.getText()))) winner=true;
+					if ((BS3.getText().equals("X") && BS3.getText().equals(BS5.getText()) && BS5.getText().equals(BS7.getText()))) winner=true;
+					if (winner ) p1Wins = true;
+					
+					if (!winner && !p1Wins) { //Despues de comprobar que p1 no ha ganado comprueba si existe una combinacion ganadora de p2
+						//check rows
+						if ((BS1.getText().equals("O") && BS1.getText().equals(BS2.getText()) && BS2.getText().equals(BS3.getText()))) winner=true;
+						if ((BS4.getText().equals("O") && BS4.getText().equals(BS5.getText()) && BS5.getText().equals(BS6.getText()))) winner=true;
+						if ((BS7.getText().equals("O") && BS7.getText().equals(BS8.getText()) && BS8.getText().equals(BS9.getText()))) winner=true;
+						//check columns
+						if ((BS1.getText().equals("O") && BS1.getText().equals(BS4.getText()) && BS4.getText().equals(BS7.getText()))) winner=true;
+						if ((BS2.getText().equals("O") && BS2.getText().equals(BS5.getText()) && BS5.getText().equals(BS8.getText()))) winner=true;
+						if ((BS3.getText().equals("O") && BS3.getText().equals(BS6.getText()) && BS6.getText().equals(BS9.getText()))) winner=true;
+						//check diagonal
+						if ((BS1.getText().equals("O") && BS1.getText().equals(BS5.getText()) && BS5.getText().equals(BS9.getText()))) winner=true;
+						if ((BS3.getText().equals("O") && BS3.getText().equals(BS5.getText()) && BS5.getText().equals(BS7.getText()))) winner=true;
+						if (winner) p2Wins = true;
+					}
+					
 				}
-				if (source.getText().equals("X") && winner) {
+				
+				if (winner && p1Wins) {
 					estado.setText(player1.nombre+" gana");
-				} else if (source.getText().equals("O") && winner) {
+				} else if (winner && p2Wins) {
 					estado.setText(player2.nombre+" gana");
 				}
-				if (winner) {
+				if (winner) { //Cuando hay un ganador se desactivan los botones del tablero
 					BS1.setEnabled(false);
 					BS2.setEnabled(false);
 					BS3.setEnabled(false);
@@ -391,7 +421,7 @@ public class JavaGame extends JFrame {
 				
 			}
 		};
-		//Añade las acciones a los botones
+		
 		nueva_partida.addActionListener(partida_nueva);
 		BS1.addActionListener(pulsarBoton);
 		BS2.addActionListener(pulsarBoton);
@@ -403,44 +433,81 @@ public class JavaGame extends JFrame {
 		BS8.addActionListener(pulsarBoton);
 		BS9.addActionListener(pulsarBoton);
 		
+
+		
 	}
 
 	public void clicarCPU() {
 		if(player2.isCPU) {
 			int r = rand.nextInt((9 - 1) + 1) + 1;
 				
-			System.out.println("Tirada CPU");
+			System.out.println("Tirada CPU "+r);
 			
 				switch(r) {
 					case 1:
-						BS1.doClick();
+						if(contadorO<3 && BS1.getText()==""||contadorO==3 && BS1.getText()=="O") {
+							BS1.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 2:
-						BS2.doClick();
+						if(contadorO<3 && BS2.getText()==""||contadorO==3 && BS2.getText()=="O") {
+							BS2.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 3:
-						BS3.doClick();
+						if(contadorO<3 && BS3.getText()==""||contadorO==3 && BS3.getText()=="O") {
+							BS3.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 4:
-						BS4.doClick();
+						if(contadorO<3 && BS4.getText()==""||contadorO==3 && BS4.getText()=="O") {
+							BS4.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 5:
-						BS5.doClick();
+						if(contadorO<3 && BS5.getText()==""||contadorO==3 && BS5.getText()=="O") {
+							BS5.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 6:
-						BS6.doClick();
+						if(contadorO<3 && BS6.getText()==""||contadorO==3 && BS6.getText()=="O") {
+							BS6.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 7:
-						BS7.doClick();
+						if(contadorO<3 && BS7.getText()==""||contadorO==3 && BS7.getText()=="O") {
+							BS7.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 8:
-						BS8.doClick();
+						if(contadorO<3 && BS8.getText()==""||contadorO==3 && BS8.getText()=="O") {
+							BS8.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 					case 9:
-						BS9.doClick();
+						if(contadorO<3 && BS9.getText()==""||contadorO==3 && BS9.getText()=="O") {
+							BS9.doClick();
+						}else {
+							clicarCPU();
+						}
 					break;
 				}
-	
 		}
 	}
 }
