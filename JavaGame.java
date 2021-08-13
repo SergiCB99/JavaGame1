@@ -26,6 +26,10 @@ public class JavaGame extends JFrame {
 	//Creamos y inicializamos el booleano que controlara el fin de la partida
 	boolean winner = false;
 	
+	//Booleanos para controlar quien gana
+	boolean p1Wins;
+	boolean p2Wins;
+	
 	//Declaramos la classe Random para usarlo en la CPU
 	Random rand = new Random();
 	
@@ -153,6 +157,9 @@ public class JavaGame extends JFrame {
 				
 				//Canviamos el valor de winner a false
 				winner = false;	
+				
+				p1Wins = false;
+				p2Wins = false;
 				
 				//Guardamos el tipo del jugador 2
 				if(H2.isSelected()) {
@@ -381,21 +388,37 @@ public class JavaGame extends JFrame {
 				//Check si hay una combinacion ganadora en el tablero despues del ultimo movimiento
 				if (!winner) {
 					//check rows
-					if ((BS1.getText().equals("X") || BS1.getText().equals("O")) &&BS1.getText().equals(BS2.getText()) && BS2.getText().equals(BS3.getText())) winner=true;
-					if ((BS4.getText().equals("X") || BS4.getText().equals("O")) &&BS4.getText().equals(BS5.getText()) && BS5.getText().equals(BS6.getText())) winner=true;
-					if ((BS7.getText().equals("X") || BS7.getText().equals("O")) &&BS7.getText().equals(BS8.getText()) && BS8.getText().equals(BS9.getText())) winner=true;
+					if ((BS1.getText().equals("X") && BS1.getText().equals(BS2.getText()) && BS2.getText().equals(BS3.getText()))) winner=true;
+					if ((BS4.getText().equals("X") && BS4.getText().equals(BS5.getText()) && BS5.getText().equals(BS6.getText()))) winner=true;
+					if ((BS7.getText().equals("X") && BS7.getText().equals(BS8.getText()) && BS8.getText().equals(BS9.getText()))) winner=true;
 					//check columns
-					if ((BS1.getText().equals("X") || BS1.getText().equals("O")) &&BS1.getText().equals(BS4.getText()) && BS4.getText().equals(BS7.getText())) winner=true;
-					if ((BS2.getText().equals("X") || BS2.getText().equals("O")) &&BS2.getText().equals(BS5.getText()) && BS5.getText().equals(BS8.getText())) winner=true;
-					if ((BS3.getText().equals("X") || BS3.getText().equals("O")) &&BS3.getText().equals(BS6.getText()) && BS6.getText().equals(BS9.getText())) winner=true;
+					if ((BS1.getText().equals("X") && BS1.getText().equals(BS4.getText()) && BS4.getText().equals(BS7.getText()))) winner=true;
+					if ((BS2.getText().equals("X") && BS2.getText().equals(BS5.getText()) && BS5.getText().equals(BS8.getText()))) winner=true;
+					if ((BS3.getText().equals("X") && BS3.getText().equals(BS6.getText()) && BS6.getText().equals(BS9.getText()))) winner=true;
 					//check diagonal
-					if ((BS1.getText().equals("X") || BS1.getText().equals("O")) &&BS1.getText().equals(BS5.getText()) && BS5.getText().equals(BS9.getText())) winner=true;
-					if ((BS3.getText().equals("X") || BS3.getText().equals("O")) &&BS3.getText().equals(BS5.getText()) && BS5.getText().equals(BS7.getText())) winner=true;
+					if ((BS1.getText().equals("X") && BS1.getText().equals(BS5.getText()) && BS5.getText().equals(BS9.getText()))) winner=true;
+					if ((BS3.getText().equals("X") && BS3.getText().equals(BS5.getText()) && BS5.getText().equals(BS7.getText()))) winner=true;
+					if (winner ) p1Wins = true;
+					
+					if (!winner && !p1Wins) { //Despues de comprobar que p1 no ha ganado comprueba si existe una combinacion ganadora de p2
+						//check rows
+						if ((BS1.getText().equals("O") && BS1.getText().equals(BS2.getText()) && BS2.getText().equals(BS3.getText()))) winner=true;
+						if ((BS4.getText().equals("O") && BS4.getText().equals(BS5.getText()) && BS5.getText().equals(BS6.getText()))) winner=true;
+						if ((BS7.getText().equals("O") && BS7.getText().equals(BS8.getText()) && BS8.getText().equals(BS9.getText()))) winner=true;
+						//check columns
+						if ((BS1.getText().equals("O") && BS1.getText().equals(BS4.getText()) && BS4.getText().equals(BS7.getText()))) winner=true;
+						if ((BS2.getText().equals("O") && BS2.getText().equals(BS5.getText()) && BS5.getText().equals(BS8.getText()))) winner=true;
+						if ((BS3.getText().equals("O") && BS3.getText().equals(BS6.getText()) && BS6.getText().equals(BS9.getText()))) winner=true;
+						//check diagonal
+						if ((BS1.getText().equals("O") && BS1.getText().equals(BS5.getText()) && BS5.getText().equals(BS9.getText()))) winner=true;
+						if ((BS3.getText().equals("O") && BS3.getText().equals(BS5.getText()) && BS5.getText().equals(BS7.getText()))) winner=true;
+						if (winner) p2Wins = true;
+					}
 				}
-				//Dependiendo de el valor del ultimo boton clicado el label mostrara un texto u otro
-				if (source.getText().equals("X") && winner) {
+				//Dependiendo de el jugador que haya ganado se mostrara un texto u otro
+				if (winner && p1Wins) {
 					estado.setText(player1.nombre+" gana");
-				} else if (source.getText().equals("O") && winner) {
+				} else if (winner && p2Wins) {
 					estado.setText(player2.nombre+" gana");
 				}
 				//Si gana se desabilitan los botones
